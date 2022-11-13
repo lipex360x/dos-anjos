@@ -7,7 +7,7 @@
   Author URI: https://github.com/lipex360x/wp-rest-api
 */
 
-if( ! defined( 'ABSPATH' ) ) exit;
+if(!defined('ABSPATH')) exit;
 
 $plugin_dir = plugin_dir_path(__FILE__);
 
