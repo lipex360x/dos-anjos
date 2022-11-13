@@ -6,7 +6,7 @@ class Create{{pascalCase moduleName}}UseCase {
     $this->repository = new {{pascalCase moduleName}}Repository();
   }
 
-  function execute($data) {    
+  function execute($data) {
     return $this->repository->create($data);
   }
 }

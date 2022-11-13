@@ -1,9 +1,9 @@
 <?php
 require_once plugin_dir_path(__FILE__) . '../entities/index.php';
 
-class EmployeeRepository {
+class EmployeeAddressRepository {
   function __construct() {
-    $this->entity = new Employee();
+    $this->entity = new EmployeeAddress();
     $this->tableName = $this->entity->tableName();
   }
   
@@ -52,10 +52,10 @@ class EmployeeRepository {
     return $wpdb->get_row($query);
   }
 
-  function findByCpf($cpf) {
+  function findByEmployeeId($employee_id) {
     global $wpdb;
 
-    $query = "SELECT * FROM {$this->tableName} WHERE cpf = '{$cpf}'";
+    $query = "SELECT * FROM {$this->tableName} WHERE employee_id = '{$employee_id}'";
     
     return $wpdb->get_row($query);
   }

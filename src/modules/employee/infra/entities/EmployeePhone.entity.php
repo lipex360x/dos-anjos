@@ -1,9 +1,12 @@
 <?php
-class Employee {
+class EmployeePhone {
   function __construct() {
     global $wpdb;
     $this->charset = $wpdb->get_charset_collate();
-    $this->tableName = $wpdb->prefix . 'employee';
+    $this->tableName = $wpdb->prefix . 'employee_phone';
+
+    $this->fkTable = new Employee();
+    $this->fkTableName = $this->fkTable->tableName();
 
     add_action('activate_wp-rest-api/rest-api.php', array($this, 'registerEntity'));
   }
@@ -13,20 +16,18 @@ class Employee {
     
     dbDelta("CREATE TABLE $this->tableName (
       id VARCHAR(36) NOT NULL DEFAULT '',
-      created_by VARCHAR(255) NOT NULL DEFAULT '',
 
-      name VARCHAR(255) NOT NULL DEFAULT '',
-      cpf VARCHAR(11) NOT NULL DEFAULT '',
-      email VARCHAR(255) NOT NULL DEFAULT '',
-      genre ENUM('male', 'female', 'other'),
-      status TINYINT(1) NOT NULL DEFAULT 0,
+      employee_id VARCHAR(36) NOT NULL DEFAULT '',
+      phone_number VARCHAR(11) NOT NULL DEFAULT '',
+      phone_type ENUM('cellphone', 'residential', 'work'),
+      is_whatsapp TINYINT(1) NOT NULL DEFAULT 0,
+      principal TINYINT(1) NOT NULL DEFAULT 0,
 
       created_at TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
       updated_at TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
-      deleted_at TIMESTAMP(6),
 
-      PRIMARY KEY  (id)
-      -- CONSTRAINT cpf_unique UNIQUE (cpf)
+      PRIMARY KEY  (id),
+      FOREIGN KEY  (employee_id) REFERENCES $this->fkTableName(id) ON DELETE CASCADE ON UPDATE CASCADE
     ) $this->charset;");
   }
 
@@ -35,8 +36,4 @@ class Employee {
   }
 }
 
-$registerEntity = new Employee();
-
-// DROP TABLE wp_employee_address;
-// DROP TABLE wp_employee_phone;
-// DROP TABLE wp_employee;
+$registerEntity = new EmployeePhone();

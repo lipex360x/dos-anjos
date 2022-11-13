@@ -42,3 +42,6 @@ class Product {
 }
 
 $registerEntity = new Product();
+
+// DROP TABLE wp_product_category;
+// DROP TABLE wp_product;
