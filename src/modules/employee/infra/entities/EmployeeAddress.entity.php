@@ -1,12 +1,11 @@
 <?php
-class Product {
+class EmployeeAddress {
   function __construct() {
     global $wpdb;
-
     $this->charset = $wpdb->get_charset_collate();
-    $this->tableName = $wpdb->prefix . 'product';
-    
-    $this->fkTable = new ProductCategory();
+    $this->tableName = $wpdb->prefix . 'employee_address';
+
+    $this->fkTable = new Employee();
     $this->fkTableName = $this->fkTable->tableName();
 
     add_action('activate_wp-rest-api/rest-api.php', array($this, 'registerEntity'));
@@ -19,20 +18,22 @@ class Product {
       id VARCHAR(36) NOT NULL DEFAULT '',
       created_by VARCHAR(255) NOT NULL DEFAULT '',
 
-      category_id VARCHAR(36) NOT NULL DEFAULT '',
-      title VARCHAR(255) NOT NULL DEFAULT '',
-      description LONGTEXT NOT NULL DEFAULT '',
-      buy_price DECIMAL(5,2) NOT NULL DEFAULT 0,
-      sell_price DECIMAL(5,2) DEFAULT 0,
-      transfer_fee DECIMAL(2,2) NOT NULL DEFAULT 0,
-      status INTEGER NOT NULL DEFAULT 0,
+      employee_id VARCHAR(36) NOT NULL DEFAULT '',
+      zipcode VARCHAR(8) NOT NULL DEFAULT '',
+      street VARCHAR(255)  NOT NULL DEFAULT '',
+      complement VARCHAR(255)  NOT NULL DEFAULT '',
+      number_address VARCHAR(255)  NOT NULL DEFAULT '',
+      district VARCHAR(255)  NOT NULL DEFAULT '',
+      city VARCHAR(255)  NOT NULL DEFAULT '',
+      state VARCHAR(255) NOT NULL DEFAULT '',
+      country VARCHAR(255) NOT NULL DEFAULT '',
 
       created_at TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
       updated_at TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
       deleted_at TIMESTAMP(6),
 
       PRIMARY KEY  (id),
-      FOREIGN KEY  (category_id) REFERENCES $this->fkTableName(id) ON DELETE CASCADE ON UPDATE CASCADE
+      FOREIGN KEY  (employee_id) REFERENCES $this->fkTableName(id) ON DELETE CASCADE ON UPDATE CASCADE
     ) $this->charset;");
   }
 
@@ -41,4 +42,4 @@ class Product {
   }
 }
 
-$registerEntity = new Product();
+$registerEntity = new EmployeeAddress();

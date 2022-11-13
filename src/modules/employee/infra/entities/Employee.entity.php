@@ -1,9 +1,9 @@
 <?php
-class {{pascalCase moduleName}} {
+class Employee {
   function __construct() {
     global $wpdb;
     $this->charset = $wpdb->get_charset_collate();
-    $this->tableName = $wpdb->prefix . '{{moduleName}}';
+    $this->tableName = $wpdb->prefix . 'employee';
 
     add_action('activate_wp-rest-api/rest-api.php', array($this, 'registerEntity'));
   }
@@ -15,15 +15,18 @@ class {{pascalCase moduleName}} {
       id VARCHAR(36) NOT NULL DEFAULT '',
       created_by VARCHAR(255) NOT NULL DEFAULT '',
 
-      title VARCHAR(255) NOT NULL DEFAULT '',
-      description LONGTEXT NOT NULL DEFAULT '',
+      name VARCHAR(255) NOT NULL DEFAULT '',
+      cpf VARCHAR(11) NOT NULL DEFAULT '',
+      email VARCHAR(255) NOT NULL DEFAULT '',
+      genre ENUM('male', 'female', 'other'),
       status TINYINT(1) NOT NULL DEFAULT 0,
 
       created_at TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
       updated_at TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
       deleted_at TIMESTAMP(6),
 
-      PRIMARY KEY  (id)
+      PRIMARY KEY  (id),
+      CONSTRAINT cpf_unique UNIQUE (cpf)
     ) $this->charset;");
   }
 
@@ -32,4 +35,4 @@ class {{pascalCase moduleName}} {
   }
 }
 
-$registerEntity = new {{pascalCase moduleName}}();
+$registerEntity = new Employee();

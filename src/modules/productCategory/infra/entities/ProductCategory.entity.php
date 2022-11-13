@@ -13,9 +13,9 @@ class ProductCategory {
     
     dbDelta("CREATE TABLE $this->tableName (
       id varchar(36) NOT NULL DEFAULT '',
-      created_by varchar(36) NOT NULL DEFAULT '',
+      created_by VARCHAR(255) NOT NULL DEFAULT '',
 
-      title varchar(256) NOT NULL DEFAULT '',
+      title varchar(255) NOT NULL DEFAULT '',
 
       created_at timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
       updated_at timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),

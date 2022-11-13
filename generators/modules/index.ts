@@ -179,7 +179,7 @@ export default {
         type: 'add',
         path: `${file.path}/${file.name}`,
         templateFile: `${pathTemplate}/${file.template}`,
-        force: true,
+        force: false,
       }
 
       action.push(createFile)
