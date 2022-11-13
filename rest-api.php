@@ -3,7 +3,8 @@
   Plugin Name: WP REST API
   Version: 1.0
   Author: lipex360
-  Author URI: https://www.udemy.com/user/bradschiff/
+  Description: Wordpress API REST Plugin
+  Author URI: https://github.com/lipex360x/wp-rest-api
 */
 
 if( ! defined( 'ABSPATH' ) ) exit;

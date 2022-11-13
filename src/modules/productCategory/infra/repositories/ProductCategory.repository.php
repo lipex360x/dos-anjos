@@ -1,9 +1,9 @@
 <?php
 require_once plugin_dir_path(__FILE__) . '../entities/index.php';
 
-class {{pascalCase moduleName}}Repository {
+class ProductCategoryRepository {
   function __construct() {
-    $this->entity = new {{pascalCase moduleName}}();
+    $this->entity = new ProductCategory();
     $this->tableName = $this->entity->tableName();
   }
   
@@ -46,6 +46,14 @@ class {{pascalCase moduleName}}Repository {
     global $wpdb;
 
     $query = "SELECT * FROM {$this->tableName} WHERE id = '{$id}'";
+    
+    return $wpdb->get_row($query);
+  }
+
+  function findByTitle($title) {
+    global $wpdb;
+
+    $query = "SELECT * FROM {$this->tableName} WHERE title = '{$title}'";
     
     return $wpdb->get_row($query);
   }
