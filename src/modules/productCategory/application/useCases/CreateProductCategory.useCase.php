@@ -7,7 +7,6 @@ class CreateProductCategoryUseCase {
   }
 
   function execute($data) {
-
     $getCategory = $this->repository->findByTitle($data['title']);
 
     if($getCategory) return new WP_Error(400, 'product category is already exists');

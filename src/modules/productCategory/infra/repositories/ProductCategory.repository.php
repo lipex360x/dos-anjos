@@ -9,17 +9,16 @@ class ProductCategoryRepository {
   
   function create($data) {
     global $wpdb;
-    $wpdb->show_errors();
 
     $data['id'] = wp_generate_uuid4();
     $this->tableName;
 
-    $insert = $wpdb->insert($this->tableName, $data);
+    $commit = $wpdb->insert($this->tableName, $data);
 
     $query = "SELECT * FROM {$this->tableName} ORDER BY created_at DESC";
     $getData = $wpdb->get_row($query);
 
-    if($insert) {
+    if($commit) {
       $response = [
         'code' => 200,
         'message' => 'created',
@@ -64,16 +63,49 @@ class ProductCategoryRepository {
     $query = "SELECT * FROM {$this->tableName} WHERE id = '{$id}'";
     $deletedRow = $wpdb->get_row($query);
 
-    $wpdb->delete($this->tableName, array('id' => $id));
+    $commit = $wpdb->delete($this->tableName, array('id' => $id));
 
-    return $deletedRow;
+    if($commit) {
+      $response = [
+        'code' => 200,
+        'message' => 'removed',
+        'data' => $deletedRow
+      ];
+    } else {
+      $wpdb->show_errors();
+      $response = [
+        'code' => 200,
+        'message' => 'no deleted',
+        'data' => null
+      ];
+    }
+
+    return $response;
   }
 
   function update($id, $updateData) {
     global $wpdb;
+    $commit = $wpdb->update($this->tableName, $updateData, array('id' => $id));
 
-    $wpdb->update($this->tableName, $updateData, array( 'id' => $id ));
-    return $this->show($id);
+    $query = "SELECT * FROM {$this->tableName} ORDER BY created_at DESC";
+    $getData = $wpdb->get_row($query);
+    
+    if($commit) {
+      $response = [
+        'code' => 200,
+        'message' => 'updated',
+        'data' => $this->show($id)
+      ];
+    } else {
+      $wpdb->show_errors();
+      $response = [
+        'code' => 200,
+        'message' => 'no updated',
+        'data' => null
+      ];
+    }
+
+    return $response;
   }
 
   function getSchema() {

@@ -11,9 +11,11 @@ class UpdateProductCategoryUseCase {
 
     if(!$getData) return new WP_Error('data', 'data not found', array('status' => 404));
 
-    return $request['id'] === $getData->id;
+    $findCategoryByTitle = $this->repository->findByTitle($request['title']);
 
-    if($getData && $request['id'] != $getData->id) return new WP_Error('data', 'product category is already exists', array('status' => 400));
+    if($getData && $findCategoryByTitle && $request['id'] != $findCategoryByTitle->id) {
+      return new WP_Error('data', 'product category is already exists', array('status' => 400));
+    }
 
     $schema = $this->repository->getSchema();
 
