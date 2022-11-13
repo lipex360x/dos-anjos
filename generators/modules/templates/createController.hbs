@@ -18,7 +18,7 @@ class Create{{pascalCase moduleName}}Controller {
       return new WP_Error('permission', 'user not allowed', array('status' => 401));
     }
     
-    $data['created_by'] = $this->auth->getHeaders()['USER_EMAIL'];
+    $data['created_by'] = wp_get_current_user()->user_email;
     $data['name'] = sanitize_text_field($request['name']);
     $data['description'] = sanitize_text_field($request['description']);
 

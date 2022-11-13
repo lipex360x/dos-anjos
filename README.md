@@ -21,7 +21,7 @@
 
 #### :zap: Startup
 * Install Packages
-- Run: `yarn` or `npm` in terminal
+- Run: `yarn` or `npm i` in terminal
 
 * Install Plugins
 
