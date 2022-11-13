@@ -15,9 +15,6 @@ class UpdateProductCategoryController {
       return new WP_Error('permission', 'user not allowed', array('status' => 401));
     }
 
-    $id = $request['id'];
-    $name = $request['name'];
-
     $useCaseResponse = $this->useCase->execute($request);
     return rest_ensure_response($useCaseResponse);
   }

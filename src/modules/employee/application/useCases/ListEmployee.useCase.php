@@ -11,7 +11,7 @@ class ListEmployeeUseCase {
   function execute() {
     $getEmployees = $this->employeeRepository->list();
 
-    $fromDomainToUseCase = [];
+    $fromDomainToUseCase = array();
     foreach ($getEmployees as $employee) {
       $address = $this->employeeAddressRepository->findByEmployeeId($employee->id);
       $phones = $this->employeePhoneRepository->findByEmployeeId($employee->id);
