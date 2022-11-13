@@ -9,6 +9,7 @@ class ProductCategoryRepository {
   
   function create($data) {
     global $wpdb;
+    $wpdb->show_errors();
 
     $data['id'] = wp_generate_uuid4();
     $this->tableName;
@@ -59,6 +60,7 @@ class ProductCategoryRepository {
 
   function delete($id) {
     global $wpdb;
+    $wpdb->show_errors();
 
     $query = "SELECT * FROM {$this->tableName} WHERE id = '{$id}'";
     $deletedRow = $wpdb->get_row($query);
@@ -72,7 +74,6 @@ class ProductCategoryRepository {
         'data' => $deletedRow
       ];
     } else {
-      $wpdb->show_errors();
       $response = [
         'code' => 200,
         'message' => 'no deleted',
@@ -85,6 +86,8 @@ class ProductCategoryRepository {
 
   function update($id, $updateData) {
     global $wpdb;
+    $wpdb->show_errors();
+
     $commit = $wpdb->update($this->tableName, $updateData, array('id' => $id));
 
     $query = "SELECT * FROM {$this->tableName} ORDER BY created_at DESC";
@@ -97,7 +100,6 @@ class ProductCategoryRepository {
         'data' => $this->show($id)
       ];
     } else {
-      $wpdb->show_errors();
       $response = [
         'code' => 200,
         'message' => 'no updated',

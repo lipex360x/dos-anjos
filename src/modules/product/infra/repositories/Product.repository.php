@@ -1,10 +1,13 @@
 <?php
 require_once plugin_dir_path(__FILE__) . '../entities/index.php';
 
-class {{pascalCase moduleName}}Repository {
+class ProductRepository {
   function __construct() {
-    $this->entity = new {{pascalCase moduleName}}();
+    $this->entity = new Product();
     $this->tableName = $this->entity->tableName();
+
+    $this->fkTable = new ProductCategory();
+    $this->fkTableName = $this->fkTable->tableName();
   }
   
   function create($data) {
@@ -26,6 +29,7 @@ class {{pascalCase moduleName}}Repository {
         'data' => $getData
       ];
     } else {
+      
       $response = [
         'code' => 400,
         'message' => 'failed',
@@ -39,7 +43,9 @@ class {{pascalCase moduleName}}Repository {
   function list() {
     global $wpdb;
 
-    $query = "SELECT * FROM {$this->tableName}";
+    $query  = "SELECT P.*, PC.title category_title ";
+    $query .= "FROM {$this->tableName} P ";
+    $query .= "LEFT JOIN {$this->fkTableName} PC ON PC.id = category_id";
 
     return $wpdb->get_results($query);
   }
@@ -47,7 +53,10 @@ class {{pascalCase moduleName}}Repository {
   function show($id) {
     global $wpdb;
 
-    $query = "SELECT * FROM {$this->tableName} WHERE id = '{$id}'";
+    $query  = "SELECT P.*, PC.title category_title ";
+    $query .= "FROM {$this->tableName} P ";
+    $query .= "LEFT JOIN {$this->fkTableName} PC ON PC.id = category_id ";
+    $query .= "WHERE P.id = '{$id}'";
     
     return $wpdb->get_row($query);
   }
@@ -62,7 +71,6 @@ class {{pascalCase moduleName}}Repository {
 
   function delete($id) {
     global $wpdb;
-    $wpdb->show_errors();
 
     $query = "SELECT * FROM {$this->tableName} WHERE id = '{$id}'";
     $deletedRow = $wpdb->get_row($query);
@@ -76,6 +84,7 @@ class {{pascalCase moduleName}}Repository {
         'data' => $deletedRow
       ];
     } else {
+      $wpdb->show_errors();
       $response = [
         'code' => 200,
         'message' => 'no deleted',
@@ -88,8 +97,6 @@ class {{pascalCase moduleName}}Repository {
 
   function update($id, $updateData) {
     global $wpdb;
-    $wpdb->show_errors();
-
     $commit = $wpdb->update($this->tableName, $updateData, array('id' => $id));
 
     $query = "SELECT * FROM {$this->tableName} ORDER BY created_at DESC";
@@ -102,6 +109,7 @@ class {{pascalCase moduleName}}Repository {
         'data' => $this->show($id)
       ];
     } else {
+      $wpdb->show_errors();
       $response = [
         'code' => 200,
         'message' => 'no updated',
