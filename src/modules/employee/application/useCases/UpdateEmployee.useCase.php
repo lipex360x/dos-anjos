@@ -9,6 +9,8 @@ class UpdateEmployeeUseCase {
   function execute($request) {
     $getData = $this->repository->show($request['id']);
 
+    // TODO: update address
+    // TODO: update phones
     if(!$getData) return new WP_Error('data', 'data not found', array('status' => 404));
 
     $schema = $this->repository->getSchema();
