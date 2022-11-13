@@ -1,5 +1,4 @@
 <?php 
-require_once plugin_dir_path(__FILE__) . '../../../../core/helpers/index.php';
 require_once plugin_dir_path(__FILE__) . '../useCases/index.php';
 
 class CreateProductController {
