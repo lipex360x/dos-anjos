@@ -14,4 +14,12 @@ class EmployeeRepository extends BaseRepository {
     
     return $wpdb->get_row($query);
   }
+
+  function list() {
+    global $wpdb;
+
+    $query  = "SELECT * FROM {$this->tableName}";
+  
+    return $wpdb->get_results($query);
+  }
 }

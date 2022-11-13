@@ -12,6 +12,6 @@ class EmployeePhoneRepository extends BaseRepository {
 
     $query = "SELECT * FROM {$this->tableName} WHERE employee_id = '{$employee_id}'";
     
-    return $wpdb->get_row($query);
+    return $wpdb->get_results($query);
   }
 }
