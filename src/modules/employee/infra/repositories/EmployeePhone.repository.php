@@ -1,9 +1,9 @@
 <?php
 require_once plugin_dir_path(__FILE__) . '../entities/index.php';
 
-class ProductCategoryRepository {
+class EmployeePhoneRepository {
   function __construct() {
-    $this->entity = new ProductCategory();
+    $this->entity = new EmployeePhone();
     $this->tableName = $this->entity->tableName();
   }
   
@@ -15,6 +15,7 @@ class ProductCategoryRepository {
     $this->tableName;
 
     $commit = $wpdb->insert($this->tableName, $data);
+    $commitError = $wpdb->last_error;
 
     $query = "SELECT * FROM {$this->tableName} ORDER BY created_at DESC";
     $getData = $wpdb->get_row($query);
@@ -28,7 +29,7 @@ class ProductCategoryRepository {
     } else {
       $response = [
         'code' => 400,
-        'message' => 'failed',
+        'message' => $commitError,
         'data' => null
       ];
     }
@@ -39,7 +40,9 @@ class ProductCategoryRepository {
   function list() {
     global $wpdb;
 
-    return $wpdb->get_results("SELECT * FROM {$this->tableName}");
+    $query = "SELECT * FROM {$this->tableName}";
+
+    return $wpdb->get_results($query);
   }
 
   function show($id) {
@@ -104,10 +107,10 @@ class ProductCategoryRepository {
     return $response;
   }
 
-  function findByTitle($title) {
+  function findByEmployeeId($employee_id) {
     global $wpdb;
 
-    $query = "SELECT * FROM {$this->tableName} WHERE title = '{$title}'";
+    $query = "SELECT * FROM {$this->tableName} WHERE employee_id = '{$employee_id}'";
     
     return $wpdb->get_row($query);
   }

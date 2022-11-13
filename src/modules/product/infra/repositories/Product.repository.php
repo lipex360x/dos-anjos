@@ -18,7 +18,8 @@ class ProductRepository {
     $this->tableName;
 
     $commit = $wpdb->insert($this->tableName, $data);
-
+    $commitError = $wpdb->last_error;
+  
     $query = "SELECT * FROM {$this->tableName} ORDER BY created_at DESC";
     $getData = $wpdb->get_row($query);
 
@@ -29,10 +30,9 @@ class ProductRepository {
         'data' => $getData
       ];
     } else {
-      
       $response = [
         'code' => 400,
-        'message' => 'failed',
+        'message' => $commitError,
         'data' => null
       ];
     }
@@ -61,43 +61,12 @@ class ProductRepository {
     return $wpdb->get_row($query);
   }
 
-  function findByTitle($title) {
-    global $wpdb;
-
-    $query = "SELECT * FROM {$this->tableName} WHERE title = '{$title}'";
-    
-    return $wpdb->get_row($query);
-  }
-
-  function delete($id) {
-    global $wpdb;
-
-    $query = "SELECT * FROM {$this->tableName} WHERE id = '{$id}'";
-    $deletedRow = $wpdb->get_row($query);
-
-    $commit = $wpdb->delete($this->tableName, array('id' => $id));
-
-    if($commit) {
-      $response = [
-        'code' => 200,
-        'message' => 'removed',
-        'data' => $deletedRow
-      ];
-    } else {
-      $wpdb->show_errors();
-      $response = [
-        'code' => 200,
-        'message' => 'no deleted',
-        'data' => null
-      ];
-    }
-
-    return $response;
-  }
-
   function update($id, $updateData) {
     global $wpdb;
+    $wpdb->show_errors();
+
     $commit = $wpdb->update($this->tableName, $updateData, array('id' => $id));
+    $commitError = $wpdb->last_error;
 
     $query = "SELECT * FROM {$this->tableName} ORDER BY created_at DESC";
     $getData = $wpdb->get_row($query);
@@ -109,15 +78,49 @@ class ProductRepository {
         'data' => $this->show($id)
       ];
     } else {
-      $wpdb->show_errors();
       $response = [
         'code' => 200,
-        'message' => 'no updated',
+        'message' => $commitError,
         'data' => null
       ];
     }
 
     return $response;
+  }
+
+  function delete($id) {
+    global $wpdb;
+    $wpdb->show_errors();
+
+    $query = "SELECT * FROM {$this->tableName} WHERE id = '{$id}'";
+    $deletedRow = $wpdb->get_row($query);
+
+    $commit = $wpdb->delete($this->tableName, array('id' => $id));
+    $commitError = $wpdb->last_error;
+
+    if($commit) {
+      $response = [
+        'code' => 200,
+        'message' => 'removed',
+        'data' => $deletedRow
+      ];
+    } else {
+      $response = [
+        'code' => 200,
+        'message' => $commitError,
+        'data' => null
+      ];
+    }
+
+    return $response;
+  }
+
+  function findByTitle($title) {
+    global $wpdb;
+
+    $query = "SELECT * FROM {$this->tableName} WHERE title = '{$title}'";
+    
+    return $wpdb->get_row($query);
   }
 
   function getSchema() {
