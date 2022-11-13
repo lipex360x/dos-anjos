@@ -11,4 +11,5 @@ if( ! defined( 'ABSPATH' ) ) exit;
 
 $plugin_dir = plugin_dir_path(__FILE__);
 
+require_once($plugin_dir . 'src/core/index.php');
 require_once($plugin_dir . 'src/modules/index.php');
