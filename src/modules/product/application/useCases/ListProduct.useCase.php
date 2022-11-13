@@ -6,7 +6,8 @@ class ListProductUseCase {
     $this->repository = new ProductRepository();
   }
 
-  function execute() {    
+  function execute() {   
+    // TODO: list by category 
     return array('product' => $this->repository->list());
   }
 }
