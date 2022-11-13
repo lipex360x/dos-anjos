@@ -11,8 +11,6 @@ class CreateEmployeeController {
   }
 
   function execute($request) {
-    // return $this->auth->getHeaders();
-
     if(!$this->auth->checkUser()) {
       return new WP_Error('permission', 'user not allowed', array('status' => 401));
     }
@@ -25,8 +23,6 @@ class CreateEmployeeController {
     $data['employee']['genre'] = sanitize_text_field($request['genre']);
     $data['address'] = $request['address'];
     $data['phone'] = $request['phone'];
-
-    // return $data;
 
     $useCaseResponse = $this->useCase->execute($data);
     return rest_ensure_response($useCaseResponse);
